@@ -16,7 +16,7 @@ public class Main {
                  //OperacoesPontuais.negativo(imagem),
                  //OperacoesPontuais.cinzaRed(imagem),
                  //OperacoesPontuais.cinzaGreen(imagem),
-                 //OperacoesPontuais.cinzaBlue(imagem)
+                 //OperacoesPontuais.cinzaBlue(imagem),
                  //OperacoesPontuais.cinzaMedia(imagem),
                  //OperacoesPontuais.binarizacao(imagem, 100),
                  //OperacoesPontuais.alteraTonalidade(imagem, "blue", 100),
@@ -44,6 +44,6 @@ public class Main {
                 //OperacoesPontuais.alteraTonalidade(imagem, "blue", 100),
                 //OperacoesPontuais.brilhoAditivo(imagem, 100),
                 //OperacoesPontuais.brilhoMultiplicativo(imagem, 0.5f)
-                "png", "C:\\Users\\Diego\\Pictures\\"+ nome +".png" );
+                "png", "C:\\Users\\diego\\OneDrive\\Imagens\\"+ nome );
     }
 }

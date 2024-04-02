@@ -278,17 +278,14 @@ public class OperacoesPontuais {
                 int g = (rgb >> 8) & 0xFF;
                 int b = rgb & 0xFF;
 
-                // Convertendo para YIQ
                 double yValue = 0.299 * r + 0.587 * g + 0.114 * b;
                 double iValue = 0.59590059 * r - 0.27455667 * g - 0.32134392 * b;
                 double qValue = 0.21153661 * r - 0.52273617 * g + 0.31119955 * b;
 
-                // Normalizando valores
                 yValue = Math.min(Math.max(yValue, 0), 255);
                 iValue = Math.min(Math.max(iValue, 0), 255);
                 qValue = Math.min(Math.max(qValue, 0), 255);
 
-                // Combinando os valores YIQ
                 int yiq = ((int) yValue << 16) | ((int) iValue << 8) | (int) qValue;
 
                 yiqImage.setRGB(x, y, yiq);
