@@ -6,7 +6,7 @@ import static app.OperacoesPontuais.RGBtoYIQ;
 
 public class Main {
     public static void main(String[] args) {
-        BufferedImage imagem = ManipulaImagem.abrirImagem("C:\\Users\\Diego\\Pictures\\lena.png");
+        BufferedImage imagem = ManipulaImagem.abrirImagem("lena.png");
 
         ManipulaImagem.exibirImagem(
                 imagem,
