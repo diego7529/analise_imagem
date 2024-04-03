@@ -265,34 +265,86 @@ public class OperacoesPontuais {
         return imgSaida;
      }
 
-    public static BufferedImage RGBtoYIQ(BufferedImage imgEntrada){
-        int width = imgEntrada.getWidth();
-        int height = imgEntrada.getHeight();
+    public static BufferedImage aditivoBandaY(BufferedImage imgEntrada, int valor){
+        int largura = imgEntrada.getWidth();
+        int altura = imgEntrada.getHeight();
+        BufferedImage imgSaida = new BufferedImage(largura, altura, imgEntrada.getType());
 
-        BufferedImage yiqImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int rgb = imgEntrada.getRGB(x, y);
-                int r = (rgb >> 16) & 0xFF;
-                int g = (rgb >> 8) & 0xFF;
-                int b = rgb & 0xFF;
-
-                double yValue = 0.299 * r + 0.587 * g + 0.114 * b;
-                double iValue = 0.59590059 * r - 0.27455667 * g - 0.32134392 * b;
-                double qValue = 0.21153661 * r - 0.52273617 * g + 0.31119955 * b;
-
-                yValue = Math.min(Math.max(yValue, 0), 255);
-                iValue = Math.min(Math.max(iValue, 0), 255);
-                qValue = Math.min(Math.max(qValue, 0), 255);
-
-                int yiq = ((int) yValue << 16) | ((int) iValue << 8) | (int) qValue;
-
-                yiqImage.setRGB(x, y, yiq);
+        for(int h = 0; h < altura; ++h) {
+            for(int w = 0; w < largura; ++w) {
+                int rgb = imgEntrada.getRGB(w, h);
+                Color cor = new Color(rgb);
+                double[] yiq = RGBParaYIQ(cor);
+                yiq[0] = validaLimiteRGB((int)yiq[0], valor);
+                Color novaCor = YIQParaRGB(yiq);
+                imgSaida.setRGB(w, h, novaCor.getRGB());
             }
         }
-        return yiqImage;
+
+        return imgSaida;
+    }
+
+    public static BufferedImage multiplicativoBandaY(BufferedImage imgEntrada, float valor){
+        int largura = imgEntrada.getWidth();
+        int altura = imgEntrada.getHeight();
+        BufferedImage imgSaida = new BufferedImage(largura, altura, imgEntrada.getType());
+
+        for(int h = 0; h < altura; ++h) {
+            for(int w = 0; w < largura; ++w) {
+                int rgb = imgEntrada.getRGB(w, h);
+                Color cor = new Color(rgb);
+                double[] yiq = RGBParaYIQ(cor);
+                yiq[0] = validaLimiteRGB((int)yiq[0], valor);
+                Color novaCor = YIQParaRGB(yiq);
+                imgSaida.setRGB(w, h, novaCor.getRGB());
+            }
         }
+
+        return imgSaida;
+    }
+
+    public static BufferedImage negativoBandaY(BufferedImage imgEntrada){
+        int largura = imgEntrada.getWidth();
+        int altura = imgEntrada.getHeight();
+        BufferedImage imgSaida = new BufferedImage(largura, altura, imgEntrada.getType());
+
+        for(int h = 0; h < altura; ++h) {
+            for(int w = 0; w < largura; ++w) {
+                int rgb = imgEntrada.getRGB(w, h);
+                Color cor = new Color(rgb);
+                double[] yiq = RGBParaYIQ(cor);
+                yiq[0] = 255 - yiq[0];
+                Color novaCor = YIQParaRGB(yiq);
+                imgSaida.setRGB(w, h, novaCor.getRGB());
+            }
+        }
+
+        return imgSaida;
+    }
+
+    private static double[] RGBParaYIQ(Color color){
+        double r = color.getRed();
+        double g = color.getGreen();
+        double b = color.getBlue();
+
+        double y = 0.299 * r + 0.587 * g + 0.114 * b;
+        double i = 0.596 * r - 0.275 * g - 0.321 * b;
+        double q = 0.212 * r - 0.528 * g + 0.311 * b;
+
+        return new double[]{y, i, q};
+    }
+
+    private static Color YIQParaRGB(double[] yiq){
+        double y = yiq[0];
+        double i = yiq[1];
+        double q = yiq[2];
+
+        int r = validaBanda((int) (y + 0.956 * i + 0.621 * q));
+        int g = validaBanda((int) (y - 0.272 * i - 0.647 * q));
+        int b = validaBanda((int) (y - 1.106 * i + 1.703 * q));
+
+        return new Color(r, g, b);
+    }
 
 
   
@@ -318,5 +370,13 @@ public class OperacoesPontuais {
   
         return banda;
      }
+
+    private static int validaBanda(int banda){
+        if(banda > 255)
+            return 255;
+        if(banda < 0)
+            return 0;
+        return banda;
+    }
   }
   

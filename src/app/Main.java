@@ -2,14 +2,12 @@ package app;
 import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
-import static app.OperacoesPontuais.RGBtoYIQ;
-
 public class Main {
     public static void main(String[] args) {
         BufferedImage imagem = ManipulaImagem.abrirImagem("lena.png");
 
         ManipulaImagem.exibirImagem(
-                imagem,
+                 imagem,
                  //OperacoesPontuais.bandaRed(imagem),
                  //OperacoesPontuais.bandaGreen(imagem),
                  //OperacoesPontuais.bandaBlue(imagem),
@@ -22,7 +20,10 @@ public class Main {
                  //OperacoesPontuais.alteraTonalidade(imagem, "blue", 100),
                  //OperacoesPontuais.brilhoAditivo(imagem, 100),
                  //OperacoesPontuais.brilhoMultiplicativo(imagem, 0.5f)
-                 OperacoesPontuais.RGBtoYIQ(imagem)
+                 //OperacoesPontuais.aditivoBandaY(imagem, 100),
+                 //OperacoesPontuais.multiplicativoBandaY(imagem, 2f),
+                 OperacoesPontuais.negativoBandaY(imagem)
+
         );
 
         Scanner scanner = new Scanner(System.in);
@@ -43,7 +44,12 @@ public class Main {
                 //OperacoesPontuais.binarizacao(imagem, 100),
                 //OperacoesPontuais.alteraTonalidade(imagem, "blue", 100),
                 //OperacoesPontuais.brilhoAditivo(imagem, 100),
-                //OperacoesPontuais.brilhoMultiplicativo(imagem, 0.5f)
-                "png", "C:\\Users\\diego\\OneDrive\\Imagens\\"+ nome );
+                //OperacoesPontuais.brilhoMultiplicativo(imagem, 0.5f),
+                //OperacoesPontuais.aditivoBandaY(imagem, 100),
+                //OperacoesPontuais.multiplicativoBandaY(imagem, 2f),
+                //OperacoesPontuais.negativoBandaY(imagem),
+                "png", nome + ".png");
+
+                //encerre o programa para imagem ser carregada no projeto
     }
 }
